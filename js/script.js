@@ -16,7 +16,7 @@ function loadData(data) {
 
     console.log(data_obj);
 
-    img_src = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" + data_obj.street + "," + data_obj.city 
+    img_src = 'https://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + data_obj.street + ',' + data_obj.city 
     
    
 
@@ -25,7 +25,7 @@ function loadData(data) {
     $nytElem.text("");
 
     // load streetview
-    $greeting.text('So, you want to live at ' + data_obj.street + ", " + data_obj.city);
+    $greeting.text('So, you want to live at ' + data_obj.street + ', ' + data_obj.city);
     $body.append('<img class="bgimg" src="' + img_src + '">' );
 
     //Load NYT
@@ -44,7 +44,7 @@ function loadData(data) {
                 );
         });
     }).error(function(){
-        $nytHeaderElem.text("New York Times Articles Could Not Be Loaded.");
+        $nytHeaderElem.text('New York Times Articles Could Not Be Loaded.');
     });
     
     return false;
