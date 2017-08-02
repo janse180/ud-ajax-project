@@ -1,6 +1,7 @@
 
 function loadData(data) {
 
+    var nytAPIKey = 'c51ec245e9f94ea8834cf5bd9c3a8d3a';
     var $body = $('body');
     var $wikiElem = $('#wikipedia-links');
     var $nytHeaderElem = $('#nytimes-header');
@@ -17,17 +18,35 @@ function loadData(data) {
 
     img_src = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" + data_obj.street + "," + data_obj.city 
     
-    $greeting.text('So, you want to live at ' + data_obj.street + ", " + data_obj.city);
-    $body.append('<img class="bgimg" src="' + img_src + '">' );
+   
 
     // clear out old data before new request
     $wikiElem.text("");
     $nytElem.text("");
 
     // load streetview
+    $greeting.text('So, you want to live at ' + data_obj.street + ", " + data_obj.city);
+    $body.append('<img class="bgimg" src="' + img_src + '">' );
 
-    // YOUR CODE GOES HERE!
-
+    //Load NYT
+    var nytData = {};
+    jQuery.getJSON("https://api.nytimes.com/svc/search/v2/articlesearch.json", {
+        'api-key': nytAPIKey,
+        'q': data_obj.city
+    }, function(data){
+        docs = data.response.docs;
+        
+        $.each(data.response.docs, function(index, item){
+            $nytElem.append(
+                $('<li>').attr('class','article').append(
+                    $('<a>').attr('href',item.web_url).text(item.headline.main)).append(
+                    $('<p>').text(item.snippet))
+                );
+        });
+    }).error(function(){
+        $nytHeaderElem.text("New York Times Articles Could Not Be Loaded.");
+    });
+    
     return false;
 };
 
