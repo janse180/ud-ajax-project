@@ -18,8 +18,6 @@ function loadData(data) {
 
     img_src = 'https://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + data_obj.street + ',' + data_obj.city 
     
-   
-
     // clear out old data before new request
     $wikiElem.text("");
     $nytElem.text("");
@@ -46,6 +44,23 @@ function loadData(data) {
     }).error(function(){
         $nytHeaderElem.text('New York Times Articles Could Not Be Loaded.');
     });
+
+    //Load Wiki Links
+    jQuery.ajax({
+        url: "https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=" + data_obj.city,
+        dataType: 'jsonp',
+        success: function(data){
+            console.log(data);
+
+            $.each(data[1], function(index, item){
+                $wikiElem.append(
+                    $('<li>').append(
+                        $('<a>').attr('href', data[3][index]).text(item))
+                )
+            })
+        }
+    });
+
     
     return false;
 };
